@@ -118,7 +118,7 @@ function updatePikachu() {
     }
     
     // Handle jumping
-    if (keys['Space'] && !pikachu.isJumping) {
+    if ((keys['Space'] || keys['ArrowUp']) && !pikachu.isJumping) {
         pikachu.velocityY = -15;
         pikachu.isJumping = true;
     }
@@ -139,8 +139,8 @@ function createObstacle() {
     const obstacle = {
         x: canvas.width,
         y: 300,
-        width: 20,
-        height: 40,
+        width: 15,
+        height: 35,
         color: '#8B4513'
     };
     obstacles.push(obstacle);
@@ -298,7 +298,7 @@ function gameLoop() {
     drawPikachu();
     
     // Obstacles
-    if (Math.random() < 0.01) {
+    if (Math.random() < 0.005) {
         createObstacle();
     }
     updateObstacles();
