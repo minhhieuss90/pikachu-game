@@ -8,7 +8,7 @@ const finalScoreElement = document.getElementById('finalScore');
 // Game state
 let gameRunning = true;
 let score = 0;
-let gameSpeed = 2;
+let gameSpeed = 1.5;
 
 // Pikachu object
 const pikachu = {
@@ -36,37 +36,76 @@ document.addEventListener('keyup', (e) => {
 
 // Game functions
 function drawPikachu() {
-    // Draw Pikachu body
+    // Draw Pikachu body (more rounded)
     ctx.fillStyle = pikachu.color;
     ctx.beginPath();
     ctx.arc(pikachu.x + pikachu.width/2, pikachu.y + pikachu.height/2, pikachu.width/2, 0, Math.PI * 2);
     ctx.fill();
     
-    // Draw Pikachu ears
-    ctx.fillStyle = '#FFD700';
-    ctx.fillRect(pikachu.x + 5, pikachu.y - 10, 8, 15);
-    ctx.fillRect(pikachu.x + 27, pikachu.y - 10, 8, 15);
+    // Add body shadow
+    ctx.fillStyle = '#FFA500';
+    ctx.beginPath();
+    ctx.arc(pikachu.x + pikachu.width/2, pikachu.y + pikachu.height/2 + 5, pikachu.width/2 - 2, 0, Math.PI * 2);
+    ctx.fill();
     
-    // Draw Pikachu eyes
+    // Draw Pikachu ears (more pointed)
+    ctx.fillStyle = '#FFD700';
+    ctx.beginPath();
+    ctx.moveTo(pikachu.x + 8, pikachu.y - 5);
+    ctx.lineTo(pikachu.x + 12, pikachu.y - 20);
+    ctx.lineTo(pikachu.x + 16, pikachu.y - 5);
+    ctx.fill();
+    
+    ctx.beginPath();
+    ctx.moveTo(pikachu.x + 24, pikachu.y - 5);
+    ctx.lineTo(pikachu.x + 28, pikachu.y - 20);
+    ctx.lineTo(pikachu.x + 32, pikachu.y - 5);
+    ctx.fill();
+    
+    // Draw Pikachu eyes (bigger and cuter)
     ctx.fillStyle = '#000';
     ctx.beginPath();
-    ctx.arc(pikachu.x + 15, pikachu.y + 15, 3, 0, Math.PI * 2);
-    ctx.arc(pikachu.x + 25, pikachu.y + 15, 3, 0, Math.PI * 2);
+    ctx.arc(pikachu.x + 15, pikachu.y + 12, 4, 0, Math.PI * 2);
+    ctx.arc(pikachu.x + 25, pikachu.y + 12, 4, 0, Math.PI * 2);
     ctx.fill();
     
-    // Draw Pikachu cheeks
-    ctx.fillStyle = '#FF6B6B';
+    // Add eye highlights
+    ctx.fillStyle = '#FFF';
     ctx.beginPath();
-    ctx.arc(pikachu.x + 8, pikachu.y + 20, 4, 0, Math.PI * 2);
-    ctx.arc(pikachu.x + 32, pikachu.y + 20, 4, 0, Math.PI * 2);
+    ctx.arc(pikachu.x + 13, pikachu.y + 10, 1.5, 0, Math.PI * 2);
+    ctx.arc(pikachu.x + 23, pikachu.y + 10, 1.5, 0, Math.PI * 2);
     ctx.fill();
     
-    // Draw Pikachu mouth
+    // Draw Pikachu cheeks (bigger and redder)
+    ctx.fillStyle = '#FF4444';
+    ctx.beginPath();
+    ctx.arc(pikachu.x + 8, pikachu.y + 18, 5, 0, Math.PI * 2);
+    ctx.arc(pikachu.x + 32, pikachu.y + 18, 5, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Draw Pikachu nose
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.arc(pikachu.x + 20, pikachu.y + 15, 1, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Draw Pikachu mouth (happier)
     ctx.strokeStyle = '#000';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(pikachu.x + 20, pikachu.y + 25, 5, 0, Math.PI);
+    ctx.arc(pikachu.x + 20, pikachu.y + 22, 6, 0, Math.PI);
     ctx.stroke();
+    
+    // Draw Pikachu tail (lightning bolt shape)
+    ctx.fillStyle = '#FFD700';
+    ctx.beginPath();
+    ctx.moveTo(pikachu.x - 5, pikachu.y + 15);
+    ctx.lineTo(pikachu.x - 15, pikachu.y + 10);
+    ctx.lineTo(pikachu.x - 10, pikachu.y + 5);
+    ctx.lineTo(pikachu.x - 20, pikachu.y);
+    ctx.lineTo(pikachu.x - 15, pikachu.y + 5);
+    ctx.lineTo(pikachu.x - 5, pikachu.y + 10);
+    ctx.fill();
 }
 
 function updatePikachu() {
@@ -100,8 +139,8 @@ function createObstacle() {
     const obstacle = {
         x: canvas.width,
         y: 300,
-        width: 30,
-        height: 50,
+        width: 20,
+        height: 40,
         color: '#8B4513'
     };
     obstacles.push(obstacle);
@@ -120,18 +159,29 @@ function createCloud() {
 
 function drawObstacles() {
     obstacles.forEach(obstacle => {
-        ctx.fillStyle = obstacle.color;
+        // Draw tree trunk
+        ctx.fillStyle = '#8B4513';
         ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
         
-        // Draw tree trunk pattern
+        // Draw tree bark pattern
         ctx.strokeStyle = '#654321';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1;
+        for (let i = 0; i < obstacle.height; i += 8) {
+            ctx.beginPath();
+            ctx.moveTo(obstacle.x, obstacle.y + i);
+            ctx.lineTo(obstacle.x + obstacle.width, obstacle.y + i);
+            ctx.stroke();
+        }
+        
+        // Draw tree leaves on top
+        ctx.fillStyle = '#228B22';
         ctx.beginPath();
-        ctx.moveTo(obstacle.x + 5, obstacle.y);
-        ctx.lineTo(obstacle.x + 5, obstacle.y + obstacle.height);
-        ctx.moveTo(obstacle.x + 25, obstacle.y);
-        ctx.lineTo(obstacle.x + 25, obstacle.y + obstacle.height);
-        ctx.stroke();
+        ctx.arc(obstacle.x + obstacle.width/2, obstacle.y - 10, 15, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Add some grass at the base
+        ctx.fillStyle = '#90EE90';
+        ctx.fillRect(obstacle.x - 2, obstacle.y + obstacle.height, obstacle.width + 4, 5);
     });
 }
 
@@ -211,12 +261,15 @@ function gameOver() {
     gameRunning = false;
     finalScoreElement.textContent = score;
     gameOverElement.style.display = 'block';
+    
+    // Add click event for restart button
+    document.querySelector('.restart-btn').onclick = restartGame;
 }
 
 function restartGame() {
     gameRunning = true;
     score = 0;
-    gameSpeed = 2;
+    gameSpeed = 1.5;
     pikachu.x = 50;
     pikachu.y = 300;
     pikachu.velocityY = 0;
@@ -225,6 +278,9 @@ function restartGame() {
     clouds = [];
     scoreElement.textContent = score;
     gameOverElement.style.display = 'none';
+    
+    // Restart the game loop
+    gameLoop();
 }
 
 function gameLoop() {
@@ -242,7 +298,7 @@ function gameLoop() {
     drawPikachu();
     
     // Obstacles
-    if (Math.random() < 0.02) {
+    if (Math.random() < 0.01) {
         createObstacle();
     }
     updateObstacles();
@@ -259,8 +315,8 @@ function gameLoop() {
     checkCollision();
     
     // Increase game speed over time
-    if (score > 0 && score % 100 === 0) {
-        gameSpeed += 0.1;
+    if (score > 0 && score % 200 === 0) {
+        gameSpeed += 0.05;
     }
     
     requestAnimationFrame(gameLoop);
