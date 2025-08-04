@@ -1,0 +1,13 @@
+{
+  "name": "pikachu-game",
+  "version": "1.0.0",
+  "description": "A simple Pikachu game built with HTML5 Canvas",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server",
+    "build": "echo 'No build step needed'"
+  },
+  "keywords": ["game", "pikachu", "html5", "canvas", "javascript"],
+  "author": "Your Name",
+  "license": "MIT"
+} 
