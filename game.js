@@ -119,12 +119,12 @@ function updatePikachu() {
     
     // Handle jumping
     if ((keys['Space'] || keys['ArrowUp']) && !pikachu.isJumping) {
-        pikachu.velocityY = -15;
+        pikachu.velocityY = -20;
         pikachu.isJumping = true;
     }
     
     // Apply gravity
-    pikachu.velocityY += 0.8;
+    pikachu.velocityY += 0.6;
     pikachu.y += pikachu.velocityY;
     
     // Ground collision
@@ -140,7 +140,7 @@ function createObstacle() {
         x: canvas.width,
         y: 300,
         width: 15,
-        height: 35,
+        height: 30,
         color: '#8B4513'
     };
     obstacles.push(obstacle);
