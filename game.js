@@ -111,20 +111,20 @@ function drawPikachu() {
 function updatePikachu() {
     // Handle movement
     if (keys['ArrowLeft'] && pikachu.x > 0) {
-        pikachu.x -= 5;
+        pikachu.x -= 6;
     }
     if (keys['ArrowRight'] && pikachu.x < canvas.width - pikachu.width) {
-        pikachu.x += 5;
+        pikachu.x += 6;
     }
     
     // Handle jumping
     if ((keys['Space'] || keys['ArrowUp']) && !pikachu.isJumping) {
-        pikachu.velocityY = -20;
+        pikachu.velocityY = -18;
         pikachu.isJumping = true;
     }
     
     // Apply gravity
-    pikachu.velocityY += 0.6;
+    pikachu.velocityY += 0.5;
     pikachu.y += pikachu.velocityY;
     
     // Ground collision
@@ -298,7 +298,7 @@ function gameLoop() {
     drawPikachu();
     
     // Obstacles
-    if (Math.random() < 0.005) {
+    if (Math.random() < 0.003) {
         createObstacle();
     }
     updateObstacles();
